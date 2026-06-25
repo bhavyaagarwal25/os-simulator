@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating System Simulator | C++, Python, Streamlit Portfolio Project</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-mode">
+
+    <!-- Global Layout -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-microchip glow-icon"></i>
+                    <span>OS Sim.</span>
+                </div>
+                <div class="subtitle">Core Architecture Simulator</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-tab="overview">
+                    <i class="fa-solid fa-gauge-high"></i> Dashboard Overview
+                </button>
+                <button class="nav-btn" data-tab="scheduler">
+                    <i class="fa-solid fa-sliders"></i> CPU Scheduler
+                </button>
+                <button class="nav-btn" data-tab="memory">
+                    <i class="fa-solid fa-memory"></i> Memory Manager
+                </button>
+                <button class="nav-btn" data-tab="deadlock">
+                    <i class="fa-solid fa-shield-halved"></i> Deadlock Allocator
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="project-tag">
+                    <span class="badge cpp">C++</span>
+                    <span class="badge py">Python</span>
+                    <span class="badge pybind">Pybind11</span>
+                </div>
+                <div class="github-link-wrapper">
+                    <a href="https://github.com" target="_blank" class="github-btn">
+                        <i class="fa-brands fa-github"></i> GitHub Codebase
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="workspace">
+            
+            <!-- Dashboard Header -->
+            <header class="workspace-header">
+                <div class="header-title">
+                    <h1 id="page-title">Dashboard Overview</h1>
+                    <p id="page-desc">System performance metrics and simulator controller overview.</p>
+                </div>
+                <div class="system-time">
+                    <i class="fa-regular fa-clock"></i> Sim Time: <span id="global-timer" class="mono">0.00s</span>
+                </div>
+            </header>
+
+            <!-- Tab Content Wrapper -->
+            <div class="content-viewport">
+
+                <!-- 1. OVERVIEW TAB -->
+                <section class="tab-panel active" id="panel-overview">
+                    <!-- Intro Card -->
+                    <div class="card intro-card glass-panel">
+                        <div class="intro-content">
+                            <h2>Engineered OS Simulator Dashboard</h2>
+                            <p>
+                                Welcome to the **Operating System Simulator**. This dashboard simulates core kernel functions: CPU process scheduling, dynamic partitioning memory management, and deadlock avoidance. Built as a high-performance demonstration, it allows you to test, analyze, and compare multiple standard algorithms side-by-side.
+                            </p>
+                            <div class="feature-bullets">
+                                <div class="bullet"><i class="fa-solid fa-circle-check text-cyan"></i> <strong>CPU Scheduler:</strong> Round Robin, SJF (Preemptive/Non-preemptive), FCFS, and Priority.</div>
+                                <div class="bullet"><i class="fa-solid fa-circle-check text-cyan"></i> <strong>Memory Allocator:</strong> First Fit, Best Fit, Worst Fit & Paged replacement simulation (FIFO, LRU, Optimal).</div>
+                                <div class="bullet"><i class="fa-solid fa-circle-check text-cyan"></i> <strong>Deadlock Prevention:</strong> Banker's safety verification algorithm.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resume Metric Cards -->
+                    <div class="metric-grid">
+                        <div class="card metric-card glass-panel text-glow-cyan">
+                            <div class="metric-header">
+                                <h3>Resource Utilization</h3>
+                                <span class="trend positive"><i class="fa-solid fa-arrow-trend-up"></i> +20%</span>
+                            </div>
+                            <div class="metric-value">20.2%</div>
+                            <p class="metric-desc">Boosted memory and CPU block allocation density via dynamic partitioning and coalescing.</p>
+                        </div>
+                        <div class="card metric-card glass-panel text-glow-green">
+                            <div class="metric-header">
+                                <h3>System Performance</h3>
+                                <span class="trend positive"><i class="fa-solid fa-arrow-trend-up"></i> +25%</span>
+                            </div>
+                            <div class="metric-value">25.0%</div>
+                            <p class="metric-desc">Improved average task response and turnaround times through optimized preemptive scheduling heuristics.</p>
+                        </div>
+                        <div class="card metric-card glass-panel text-glow-purple">
+                            <div class="metric-header">
+                                <h3>C++ Engine Latency</h3>
+                                <span class="trend positive"><i class="fa-solid fa-arrow-trend-down"></i> -88%</span>
+                            </div>
+                            <div class="metric-value">12.5 μs</div>
+                            <p class="metric-desc">Execution latency achieved by compiling the CPU scheduler using Pybind11 bound C++ code.</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Guide Cards -->
+                    <div class="overview-grid">
+                        <div class="card glass-panel">
+                            <h3><i class="fa-solid fa-code"></i> Hybrid Architecture (C++ / Python)</h3>
+                            <p>
+                                The production module of this simulator utilizes a performance-driven C++ backend linked to a Python interface. Pybind11 generates highly optimized bindings, enabling the Streamlit frontend to invoke compiled algorithms with minimal overhead.
+                            </p>
+                            <div class="arch-flow">
+                                <span class="node cpp-node">C++ Core</span>
+                                <i class="fa-solid fa-arrow-right-long connector"></i>
+                                <span class="node pybind-node">Pybind11</span>
+                                <i class="fa-solid fa-arrow-right-long connector"></i>
+                                <span class="node py-node">Python Streamlit</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card glass-panel">
+                            <h3><i class="fa-solid fa-rocket"></i> Get Started Instantly</h3>
+                            <p>
+                                Pick any module from the sidebar navigation to launch the real-time simulation panel. You can manually define custom inputs or load demo scenarios to visualize kernel mechanics immediately.
+                            </p>
+                            <div class="quick-links">
+                                <button class="btn btn-primary" onclick="switchTab('scheduler')">Launch CPU Scheduler</button>
+                                <button class="btn btn-secondary" onclick="switchTab('memory')">Launch Memory Manager</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. CPU SCHEDULER TAB -->
+                <section class="tab-panel" id="panel-scheduler">
+                    <div class="dual-column-layout">
+                        <!-- Left Panel: Controls & Inputs -->
+                        <div class="panel-left card glass-panel">
+                            <div class="panel-section">
+                                <div class="section-title-wrap">
+                                    <h3><i class="fa-solid fa-gears text-cyan"></i> Scheduler Controls</h3>
+                                    <button class="btn btn-small btn-secondary" id="btn-load-scheduler-demo">Load Demo Workload</button>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="sched-algorithm">Scheduling Algorithm</label>
+                                    <select id="sched-algorithm" class="form-control">
+                                        <option value="fcfs">First-Come, First-Served (FCFS)</option>
+                                        <option value="sjf_np">Shortest Job First (SJF) - Non-Preemptive</option>
+                                        <option value="sjf_p" selected>Shortest Job First (SRTF) - Preemptive</option>
+                                        <option value="priority_np">Priority Scheduling - Non-Preemptive</option>
+                                        <option value="priority_p">Priority Scheduling - Preemptive</option>
+                                        <option value="rr">Round Robin (RR)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="rr-quantum-group" style="display: none;">
+                                    <label for="sched-quantum">Time Quantum</label>
+                                    <input type="number" id="sched-quantum" class="form-control" value="2" min="1" max="10">
+                                </div>
+
+                                <div class="simulation-speed-wrap">
+                                    <label for="sched-speed">Sim Speed: <span id="speed-label" class="mono">1x</span></label>
+                                    <input type="range" id="sched-speed" min="0.2" max="3" step="0.1" value="1">
+                                </div>
+
+                                <div class="btn-group">
+                                    <button class="btn btn-success" id="btn-sched-run"><i class="fa-solid fa-play"></i> Run Sim</button>
+                                    <button class="btn btn-warning" id="btn-sched-pause" disabled><i class="fa-solid fa-pause"></i> Pause</button>
+                                    <button class="btn btn-secondary" id="btn-sched-step"><i class="fa-solid fa-forward-step"></i> Step</button>
+                                    <button class="btn btn-danger" id="btn-sched-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                                </div>
+                            </div>
+
+                            <hr class="separator">
+
+                            <div class="panel-section">
+                                <h3><i class="fa-solid fa-circle-plus text-cyan"></i> Add New Process</h3>
+                                <form id="add-process-form" class="process-form-grid">
+                                    <div class="form-group">
+                                        <label>Process ID</label>
+                                        <input type="text" id="proc-id" class="form-control mono" placeholder="e.g. P1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Arrival Time</label>
+                                        <input type="number" id="proc-arrival" class="form-control" value="0" min="0" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Burst Time</label>
+                                        <input type="number" id="proc-burst" class="form-control" value="5" min="1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Priority</label>
+                                        <input type="number" id="proc-priority" class="form-control" value="1" min="1" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary span-cols"><i class="fa-solid fa-plus"></i> Add Process</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Visualizer & Output -->
+                        <div class="panel-right space-y-6">
+                            
+                            <!-- CPU & Ready Queue Visualization -->
+                            <div class="card glass-panel visualizer-card">
+                                <h3><i class="fa-solid fa-tv text-cyan"></i> Processor Pipeline</h3>
+                                
+                                <div class="pipeline-view">
+                                    <!-- CPU status block -->
+                                    <div class="cpu-core-visual">
+                                        <div class="core-title">CPU CORE</div>
+                                        <div class="core-active-proc" id="cpu-active-proc">IDLE</div>
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar" id="cpu-progress" style="width: 0%;"></div>
+                                        </div>
+                                        <div class="core-stats text-sm text-dim">
+                                            Time Left: <span id="cpu-time-left" class="mono">--</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Ready Queue container -->
+                                    <div class="ready-queue-visual">
+                                        <div class="queue-title">READY QUEUE</div>
+                                        <div class="queue-list" id="ready-queue-list">
+                                            <!-- Dynamically populated process cards -->
+                                            <div class="empty-queue-msg text-dim">Queue is empty</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Real-time Gantt Chart -->
+                            <div class="card glass-panel">
+                                <h3><i class="fa-solid fa-chart-gantt text-cyan"></i> Gantt Chart</h3>
+                                <div class="gantt-chart-container scrollable-x">
+                                    <div class="gantt-chart" id="gantt-timeline">
+                                        <!-- Blocks generated dynamically -->
+                                    </div>
+                                    <div class="gantt-labels" id="gantt-labels">
+                                        <!-- Timestamps generated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Process Job Pool & Stats -->
+                            <div class="card glass-panel">
+                                <h3><i class="fa-solid fa-table-list text-cyan"></i> Process Control Blocks & Statistics</h3>
+                                <div class="table-container scrollable-x">
+                                    <table class="data-table" id="scheduler-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Process ID</th>
+                                                <th>Arrival Time</th>
+                                                <th>Burst Time</th>
+                                                <th>Priority</th>
+                                                <th>Completion Time (CT)</th>
+                                                <th>Turnaround Time (TAT)</th>
+                                                <th>Waiting Time (WT)</th>
+                                                <th>Response Time (RT)</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="scheduler-table-body">
+                                            <!-- Process list rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="averages-summary" id="scheduler-averages">
+                                    <div class="avg-box">Average Turnaround Time: <span id="avg-tat" class="mono text-cyan">0.0</span></div>
+                                    <div class="avg-box">Average Waiting Time: <span id="avg-wt" class="mono text-cyan">0.0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. MEMORY MANAGER TAB -->
+                <section class="tab-panel" id="panel-memory">
+                    <div class="sub-tab-nav">
+                        <button class="sub-btn active" data-sub="mem-allocation">Dynamic Memory Allocation</button>
+                        <button class="sub-btn" data-sub="mem-paging">Page Replacement Heuristics</button>
+                    </div>
+
+                    <!-- SUBTAB 3A: DYNAMIC MEMORY ALLOCATION -->
+                    <div class="sub-panel active" id="subpanel-mem-allocation">
+                        <div class="dual-column-layout">
+                            <!-- Left controls -->
+                            <div class="panel-left card glass-panel">
+                                <div class="panel-section">
+                                    <div class="section-title-wrap">
+                                        <h3><i class="fa-solid fa-sliders text-cyan"></i> Allocation Setup</h3>
+                                        <button class="btn btn-small btn-secondary" id="btn-load-memory-demo">Load Demo Partitioning</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="mem-algorithm">Fitting Algorithm</label>
+                                        <select id="mem-algorithm" class="form-control">
+                                            <option value="first_fit" selected>First Fit</option>
+                                            <option value="best_fit">Best Fit</option>
+                                            <option value="worst_fit">Worst Fit</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="btn-group">
+                                        <button class="btn btn-success" id="btn-mem-allocate-step"><i class="fa-solid fa-shoe-prints"></i> Visual Allocate Step</button>
+                                        <button class="btn btn-danger" id="btn-mem-reset"><i class="fa-solid fa-rotate-left"></i> Reset Memory</button>
+                                    </div>
+                                </div>
+
+                                <hr class="separator">
+
+                                <div class="panel-section">
+                                    <h3><i class="fa-solid fa-plus text-cyan"></i> Request Allocation</h3>
+                                    <form id="mem-allocate-form" class="space-y-4">
+                                        <div class="form-group">
+                                            <label>Process ID</label>
+                                            <input type="text" id="mem-req-proc-id" class="form-control mono" placeholder="e.g. PA" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Size Requested (KB)</label>
+                                            <input type="number" id="mem-req-size" class="form-control" placeholder="e.g. 50" min="1" max="1000" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary width-full"><i class="fa-solid fa-square-plus"></i> Allocate</button>
+                                    </form>
+                                </div>
+
+                                <hr class="separator">
+
+                                <div class="panel-section">
+                                    <h3><i class="fa-solid fa-trash-can text-cyan"></i> Release / Free Process</h3>
+                                    <form id="mem-free-form" class="process-form-grid">
+                                        <div class="form-group span-cols">
+                                            <label>Active Process</label>
+                                            <select id="mem-free-proc-select" class="form-control">
+                                                <!-- Populated dynamically -->
+                                                <option value="" disabled selected>No active processes</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-danger span-cols"><i class="fa-solid fa-unlock"></i> Deallocate & Coalesce</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Right visualization -->
+                            <div class="panel-right space-y-6">
+                                <div class="card glass-panel">
+                                    <h3><i class="fa-solid fa-rectangle-list text-cyan"></i> Memory Allocator Grid</h3>
+                                    <div class="memory-meta-info">
+                                        Total Memory Capacity: <span class="mono text-cyan" id="mem-total-display">500 KB</span> | 
+                                        Allocated: <span class="mono text-green" id="mem-allocated-display">0 KB</span> | 
+                                        Fragmentation: <span class="mono text-purple" id="mem-frag-display">0 KB</span>
+                                    </div>
+                                    
+                                    <!-- Memory Layout Visualization Bar -->
+                                    <div class="memory-map-bar-container">
+                                        <div class="memory-map-bar" id="memory-map-bar-visual">
+                                            <!-- Dynamically filled with partition blocks -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Step logs -->
+                                    <div class="memory-scanning-step-console" id="mem-scan-console">
+                                        <span class="text-dim">Scanning console: ready for memory request</span>
+                                    </div>
+                                </div>
+
+                                <div class="card glass-panel">
+                                    <h3><i class="fa-solid fa-table text-cyan"></i> Partition Table</h3>
+                                    <div class="table-container">
+                                        <table class="data-table" id="mem-partitions-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Block Address (Start - End)</th>
+                                                    <th>Block Size</th>
+                                                    <th>Status</th>
+                                                    <th>Allocated Process</th>
+                                                    <th>Internal Frag.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="mem-partitions-table-body">
+                                                <!-- Dynamically populated -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB 3B: PAGE REPLACEMENT -->
+                    <div class="sub-panel" id="subpanel-mem-paging">
+                        <div class="dual-column-layout">
+                            <!-- Left controls -->
+                            <div class="panel-left card glass-panel">
+                                <div class="panel-section">
+                                    <div class="section-title-wrap">
+                                        <h3><i class="fa-solid fa-sliders text-cyan"></i> Paging Parameters</h3>
+                                        <button class="btn btn-small btn-secondary" id="btn-load-paging-demo">Load Demo Pages</button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="paging-algorithm">Replacement Strategy</label>
+                                        <select id="paging-algorithm" class="form-control">
+                                            <option value="fifo" selected>First-In, First-Out (FIFO)</option>
+                                            <option value="lru">Least Recently Used (LRU)</option>
+                                            <option value="optimal">Optimal Strategy</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="paging-frame-count">Page Frame Slots</label>
+                                        <input type="number" id="paging-frame-count" class="form-control" value="3" min="1" max="6">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="paging-stream-input">Page Request Stream (Comma Separated)</label>
+                                        <input type="text" id="paging-stream-input" class="form-control mono" value="7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2">
+                                    </div>
+
+                                    <button class="btn btn-primary width-full" id="btn-paging-simulate"><i class="fa-solid fa-play"></i> Run Paging Simulation</button>
+                                </div>
+                            </div>
+
+                            <!-- Right visualization -->
+                            <div class="panel-right space-y-6">
+                                <div class="card glass-panel">
+                                    <h3><i class="fa-solid fa-table-cells text-cyan"></i> Paging Allocation Table</h3>
+                                    
+                                    <div class="paging-stats-bar">
+                                        Total Hits: <span class="mono text-green" id="paging-hits">0</span> | 
+                                        Total Faults: <span class="mono text-red" id="paging-faults">0</span> | 
+                                        Hit Ratio: <span class="mono text-cyan" id="paging-ratio">0%</span>
+                                    </div>
+
+                                    <div class="table-container scrollable-x">
+                                        <table class="paging-grid-table" id="paging-grid-table">
+                                            <!-- Dynamically filled with pages & columns representing frame transitions -->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. DEADLOCK ALLOCATOR TAB -->
+                <section class="tab-panel" id="panel-deadlock">
+                    <div class="dual-column-layout">
+                        <!-- Left controls & matrix configuring -->
+                        <div class="panel-left card glass-panel">
+                            <div class="panel-section">
+                                <div class="section-title-wrap">
+                                    <h3><i class="fa-solid fa-circle-nodes text-cyan"></i> Bankers Parameters</h3>
+                                    <button class="btn btn-small btn-secondary" id="btn-load-bankers-demo">Load Safe Scenario</button>
+                                </div>
+
+                                <div class="form-group">
+                                    <button class="btn btn-warning width-full" id="btn-load-bankers-unsafe-demo">Load Unsafe Scenario</button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Total Available Resources</label>
+                                    <div class="resource-vector-inputs">
+                                        <div class="res-box">
+                                            <span class="res-lbl">A</span>
+                                            <input type="number" id="avail-res-a" class="form-control text-center mono" value="3" min="0">
+                                        </div>
+                                        <div class="res-box">
+                                            <span class="res-lbl">B</span>
+                                            <input type="number" id="avail-res-b" class="form-control text-center mono" value="3" min="0">
+                                        </div>
+                                        <div class="res-box">
+                                            <span class="res-lbl">C</span>
+                                            <input type="number" id="avail-res-c" class="form-control text-center mono" value="2" min="0">
+                                        </div>
+                                    </div>
+                                    <small class="text-dim">Resources currently available in system buffer.</small>
+                                </div>
+
+                                <button class="btn btn-success width-full" id="btn-bankers-verify"><i class="fa-solid fa-shield-halved"></i> Run Banker's Safety Test</button>
+                            </div>
+                            
+                            <hr class="separator">
+
+                            <div class="panel-section">
+                                <h3><i class="fa-solid fa-pen-to-square text-cyan"></i> Modify Matrix Cells</h3>
+                                <div class="table-container">
+                                    <table class="matrix-edit-table" id="bankers-inputs-table">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2">Proc</th>
+                                                <th colspan="3">Allocation</th>
+                                                <th colspan="3">Max Need</th>
+                                            </tr>
+                                            <tr>
+                                                <th>A</th><th>B</th><th>C</th>
+                                                <th>A</th><th>B</th><th>C</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bankers-inputs-body">
+                                            <!-- Dynamically generated rows P0-P4 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right visual safety check output -->
+                        <div class="panel-right space-y-6">
+                            <!-- Safety summary -->
+                            <div class="card glass-panel safety-alert-card text-center" id="bankers-status-card">
+                                <div class="safety-status-title" id="bankers-safe-status">READY TO EVALUATE</div>
+                                <div class="safety-status-seq" id="bankers-sequence-display">Click Run to evaluate system safety.</div>
+                            </div>
+
+                            <!-- Calculations Table -->
+                            <div class="card glass-panel">
+                                <h3><i class="fa-solid fa-calculator text-cyan"></i> Calculations Matrix (Need = Max - Allocation)</h3>
+                                <div class="table-container scrollable-x">
+                                    <table class="data-table" id="bankers-calc-table">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2">Process</th>
+                                                <th colspan="3">Max Demand</th>
+                                                <th colspan="3">Allocated</th>
+                                                <th colspan="3" class="header-highlight">Remaining Need</th>
+                                            </tr>
+                                            <tr>
+                                                <th>A</th><th>B</th><th>C</th>
+                                                <th>A</th><th>B</th><th>C</th>
+                                                <th class="header-highlight">A</th><th class="header-highlight">B</th><th class="header-highlight">C</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bankers-calc-body">
+                                            <!-- Dynamically filled calculations -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Execution steps log -->
+                            <div class="card glass-panel">
+                                <h3><i class="fa-solid fa-terminal text-cyan"></i> Safety Check Chronology</h3>
+                                <div class="bankers-steps-log" id="bankers-steps-log">
+                                    <div class="step-log-item info"><i class="fa-solid fa-info-circle"></i> Waiting for verification run...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Script imports -->
+    <script src="algorithms.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

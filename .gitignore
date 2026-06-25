@@ -1,0 +1,30 @@
+# Python Virtual Environment
+venv/
+.venv/
+env/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Compiled C++ Extensions & Build Files
+build/
+*.so
+*.o
+*.obj
+*.dylib
+*.dll
+*.lib
+*.a
+*.out
+
+# IDEs & System Files
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
